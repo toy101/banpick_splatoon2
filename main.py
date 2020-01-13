@@ -1,10 +1,14 @@
 import discord
+from manager import BanPickManager
 
-# 自分のBotのアクセストークンに置き換えてください
-TOKEN = 'NjY1ODEyNzUxNDYxMTIyMDUw.XhrKJw.Ivn59QhQ9dBUoq0gtVJedLnIA4A'
+token_path = "token.txt"
+with open(token_path) as f:
+    TOKEN = f.read()
+    TOKEN = TOKEN.strip()
 
-# 接続に必要なオブジェクトを生成
+# 必要なオブジェクトを生成
 client = discord.Client()
+manager = BanPickManager()
 
 # 起動時に動作する処理
 @client.event
@@ -19,7 +23,7 @@ async def on_message(message):
     if message.author.bot:
         return
 
-    if message.channel:
+    if message.channel.name == 'banpick':
         await message.channel.send('にゃーん')
 
     return
