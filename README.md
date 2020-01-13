@@ -1,0 +1,1 @@
+# banpick_splatoon2
