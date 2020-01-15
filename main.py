@@ -6,7 +6,6 @@ with open(token_path) as f:
     TOKEN = f.read()
     TOKEN = TOKEN.strip()
 
-# 必要なオブジェクトを生成
 client = discord.Client()
 manager = BanPickManager()
 
@@ -22,9 +21,12 @@ async def on_message(message):
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
         return
+    if message.channel.name != 'banpick':
+        return
 
-    if message.channel.name == 'banpick':
-        await message.channel.send('にゃーん')
+    msg = manager.controller(message.content)
+
+    await message.channel.send(msg)
 
     return
 
