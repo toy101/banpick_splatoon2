@@ -20,6 +20,7 @@ class BanPickManager():
         self.member = np.loadtxt("member.csv", delimiter=',', dtype=str,
                                  encoding='shift_jis')
         self.stages = all_stage
+        self.seleced_stage = None
 
         # self.alpha = []
         # self.beta = []
@@ -51,6 +52,9 @@ class BanPickManager():
 
         self.last_msg = ""
 
+        if not self.seleced_stage:
+            self.stages.append(self.seleced_stage)
+
     def controller(self, content):
 
         commnand = ["スタート"]
@@ -71,6 +75,12 @@ class BanPickManager():
             self.banpick_flag = True
             msg += "バンピックを開始します\n"
             msg += "\n"
+
+        if content == "リセット":
+
+            msg = "リセットします"
+            self._reset()
+            return msg
 
         if not self.banpick_flag:
             return "不正な入力です"
@@ -125,7 +135,7 @@ class BanPickManager():
         # バンピックの順番を指示するメッセージを生成
         msg = ''
         for i in range(4):
-            msg += self.ab_list[i]
+            msg += self.ab_list[num + i]
             # msg += ban_pick[num//4]
             if i != 3:
                 msg += "→"
@@ -148,8 +158,8 @@ class BanPickManager():
 
         # return self.stages.pop(np.random.randint(len(self.stages)))
 
-        stage = self.stages.pop(np.random.randint(len(self.stages)))
-        return "ステージ : {}".format(stage)
+        self.seleced_stage = self.stages.pop(np.random.randint(len(self.stages)))
+        return "ステージ : {}".format(self.seleced_stage)
 
 # デバック
 if __name__ == '__main__':
